@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node scripts/generate-favicon.cjs && eleventy --serve",
     "build": "node scripts/generate-favicon.cjs && eleventy",
+    "build-ghpages": "npm run build -- --pathprefix=/noartem.github.io/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
