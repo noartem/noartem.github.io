@@ -12,7 +12,7 @@
 
 body {
   margin: 0;
-  font-family: "PT Serif", serif;
+  font-family: "PT Serif", "Times New Roman", "Noto Serif", serif;
   color: var(--text);
   background: #ffffff;
 }
@@ -57,7 +57,7 @@ a:hover {
 }
 
 .brand {
-  font-family: "PT Sans", sans-serif;
+  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   color: #1f2937;
@@ -67,7 +67,7 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.85rem;
-  font-family: "PT Sans", sans-serif;
+  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.9rem;
   color: var(--muted);
   margin-top: 0.3rem;
@@ -83,7 +83,7 @@ a:hover {
 }
 
 .top-right {
-  font-family: "PT Sans", sans-serif;
+  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.85rem;
 }
 
@@ -144,7 +144,7 @@ main > .section:not(:first-child) {
 
 .portfolio-table th {
   text-align: left;
-  font-family: "PT Sans", sans-serif;
+  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.75rem;
   letter-spacing: 0.12rem;
   text-transform: uppercase;
@@ -161,7 +161,7 @@ main > .section:not(:first-child) {
 }
 
 .portfolio-table td:first-child {
-  font-family: "PT Sans", sans-serif;
+  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.9rem;
   color: #4b5563;
   width: 22%;
