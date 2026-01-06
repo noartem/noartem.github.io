@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Personal website of Artem Noskov with bio and selected projects."
+    />
+    <title>{{ title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+  </head>
+  <body>
+    {% set contactOrder = ["email", "github", "linkedin", "telegram", "x"] %}
+
+    <div class="page">
+      <header class="topbar">
+        <div class="top-left">
+          <img
+            src="/assets/profile.jpg"
+            alt="Portrait of {{ person.name }}"
+            class="avatar"
+          />
+          <div>
+            <div class="brand">{{ person.name }}</div>
+            <div>{{ person.role | markdownInline | safe }}</div>
+          </div>
+        </div>
+        <div class="top-right">
+          {% if person.contacts %}
+            {% for key in contactOrder %}
+              {% set value = person.contacts[key] %}
+              {% if value %}
+                {% if key == "email" %}
+                  <a href="mailto:{{ value }}">Email</a>
+                {% elseif key == "github" %}
+                  <a href="https://github.com/{{ value }}">GitHub</a>
+                {% elseif key == "linkedin" %}
+                  <a href="https://www.linkedin.com/in/{{ value }}">LinkedIn</a>
+                {% elseif key == "x" %}
+                  <a href="https://x.com/{{ value }}">Twitter</a>
+                {% elseif key == "telegram" %}
+                  <a href="https://t.me/{{ value }}">Telegram</a>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </header>
+
+      <main>
+        <section class="section" id="portfolio">
+          <h2>Projects</h2>
+          <table class="portfolio-table">
+            <thead>
+              <tr>
+                <th>Stack</th>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for project in projects %}
+              <tr>
+                <td>
+                  {% if project.stack %}
+                    {{ project.stack | join(", ") }}
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{ project.url }}">{{ project.name }}</a>
+                  {% if project.demo %}
+                    <span>
+                      · <a href="{{ project.demo }}">Demo</a>
+                    </span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if project.description %}
+                    {{ project.description | markdownInline | safe }}
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

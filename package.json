@@ -1,0 +1,21 @@
+{
+  "name": "noartem.github.io",
+  "version": "0.0.1",
+  "description": "",
+  "license": "ISC",
+  "author": "Artem Noskov <artem@noartem.ru>",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node scripts/generate-favicon.cjs && eleventy --serve",
+    "build": "node scripts/generate-favicon.cjs && eleventy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "jimp": "^0.22.12",
+    "js-yaml": "^4.1.0",
+    "markdown-it": "^14.1.0",
+    "png-to-ico": "^2.1.0"
+  }
+}

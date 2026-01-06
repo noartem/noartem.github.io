@@ -1,0 +1,78 @@
+title: "Artem Noskov"
+person:
+  name: Artem Noskov
+  role: Software engineer interested in web
+  stack:
+    - PHP
+    - Laravel
+    - JavaScript
+    - TypeScript
+    - Vue
+    - Golang
+  contacts:
+    email: artem@noartem.ru
+    x: noonartem
+    telegram: nooskoov
+    github: noartem
+    linkedin: noartem
+projects:
+  - name: laravel-wide-events
+    url: https://github.com/noartem/laravel-wide-events
+    description: >-
+      Wide Events for Laravel, inspired by [loggingsucks.com](https://loggingsucks.com)
+    stack:
+      - PHP
+      - Laravel
+  - name: Elementor
+    url: https://github.com/noartem/elementor
+    description: >-
+      UI library for Desktop Applications written in C++ using Skia and GLFW.
+    stack:
+      - C++
+      - Skia
+      - GLFW
+  - name: Mushrooms VS Pigs
+    url: https://github.com/noartem/mushroomsvspigs"
+    description: >-
+      Simple tower defence game
+    stack:
+      - Godot
+  - name: scheduling-algorithms
+    url: https://github.com/noartem/scheduling-algorithms
+    demo: https://noartem.github.io/scheduling-algorithms
+    description: >-
+      Various scheduling alghoritms process visualization
+    stack:
+      - Vue
+      - TypeScript
+  - name: "pomidor"
+    url: https://github.com/noartem/pomidor
+    demo: https://noartem.github.io/pomidor
+    description: >-
+      Pomidoro time tracker
+    stack:
+      - React
+      - TypeScript
+  - name: 2048
+    url: https://github.com/noartem/2048
+    demo: https://noartem.github.io/2048
+    stack:
+      - React
+      - TypeScript
+  - name: godi
+    url: https://github.com/noartem/godi
+    description: "Runtime DI Container for Golang"
+    stack:
+      - Golang
+  - name: ecdh
+    url: https://github.com/noartem/ecdh
+    description: "Golang crypto library"
+    stack:
+      - Golang
+  - name: gascore/gas
+    stack:
+      - Golang
+    url: https://github.com/gascore/gas
+    demo: https://gascore.github.io
+    description: >-
+      UI (Frontend) library
