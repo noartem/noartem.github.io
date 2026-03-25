@@ -16,6 +16,28 @@ person:
     github: noartem
     linkedin: noartem
 projects:
+  - name: nnt
+    url: https://github.com/noartem/nnt
+    description: >-
+      Easily send notifications from terminal and coding agents
+    stack:
+      - TypeScript
+  - name: skills
+    url: https://github.com/noartem/skills
+    description: >-
+      Personal collection of hand crafted agents skills, view on [skills.sh/noartem](https://skills.sh/noartem)
+    stack:
+      - Markdown
+  - name: kawa
+    url: https://github.com/noartem/kawa
+    description: >-
+      Agents powered automation platform
+    stack:
+      - PHP
+      - Laravel
+      - Python
+      - TypeScript
+      - Vue
   - name: laravel-wide-events
     url: https://github.com/noartem/laravel-wide-events
     description: >-
