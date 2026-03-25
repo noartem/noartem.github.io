@@ -154,7 +154,7 @@ main > .section:not(:first-child) {
 }
 
 .portfolio-table td {
-  padding: 1.2rem 0;
+  padding: 0.9rem 0.9rem 0.9rem 0;
   vertical-align: top;
   border-bottom: 1px solid var(--border);
   color: #1f2937;
