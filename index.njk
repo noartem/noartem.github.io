@@ -61,8 +61,8 @@
           <table class="portfolio-table">
             <thead>
               <tr>
-                <th>Stack</th>
                 <th>Name</th>
+                <th>Stack</th>
                 <th>Description</th>
               </tr>
             </thead>
@@ -70,16 +70,16 @@
               {% for project in projects %}
               <tr>
                 <td>
-                  {% if project.stack %}
-                    {{ project.stack | join(", ") }}
-                  {% endif %}
-                </td>
-                <td>
                   <a href="{{ project.url }}">{{ project.name }}</a>
                   {% if project.demo %}
                     <span>
                       · <a href="{{ project.demo }}">Demo</a>
                     </span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if project.stack %}
+                    {{ project.stack | join(", ") }}
                   {% endif %}
                 </td>
                 <td>
