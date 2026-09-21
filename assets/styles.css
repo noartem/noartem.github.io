@@ -128,7 +128,6 @@ p {
 }
 
 main > .section:not(:first-child) {
-  border-top: 1px solid var(--border);
   margin-top: 2rem;
 }
 
