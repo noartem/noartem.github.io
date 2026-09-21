@@ -3,8 +3,8 @@ name: Refresh data
 # Keeps profile data current:
 #  - daily scheduled run
 #  - immediate run when the bucket repo changes (repository_dispatch: bucket-updated)
-# Regenerates bucket.yml, _includes/bucket-rows.njk, assets/profile.jpg + favicon,
-# and pushes updated Portfolio/Bucket tables to noartem/noartem (profile README).
+# Regenerates bucket.yml, _includes/bucket-rows.njk, assets/profile.jpg + favicon.
+# Profile README tables are maintained by noartem/noartem refresh.yml workflow.
 
 on:
   schedule:
@@ -52,39 +52,6 @@ jobs:
       - name: Regenerate favicon from new avatar
         if: steps.diff.outputs.changed == 'true'
         run: node scripts/generate-favicon.cjs
-
-      - name: Regenerate profile README tables
-        if: steps.diff.outputs.changed == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PROFILE_REPO: /tmp/noartem-profile
-        run: |
-          git clone --depth 1 "https://x-access-token:${GITHUB_TOKEN}@github.com/noartem/noartem.git" /tmp/noartem-profile
-          node scripts/fetch-data.cjs
-          cd /tmp/noartem-profile
-          git add README.md
-          if git diff --cached --quiet; then
-            echo "PROFILE_CHANGED=false" >> "$GITHUB_ENV"
-          else
-            echo "PROFILE_CHANGED=true" >> "$GITHUB_ENV"
-          fi
-
-      - name: Commit site data
-        if: steps.diff.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: refresh bucket data and avatar"
-          git push
-
-      - name: Commit profile README
-        if: env.PROFILE_CHANGED == 'true'
-        run: |
-          cd /tmp/noartem-profile
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: refresh portfolio and bucket tables"
-          git push
 
       - name: Trigger site deploy
         if: steps.diff.outputs.changed == 'true'
