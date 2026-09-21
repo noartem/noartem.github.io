@@ -1,8 +1,8 @@
 name: Refresh data
 
-# Keeps profile data current:
+# Keeps site data current:
 #  - daily scheduled run
-#  - immediate run when the bucket repo changes (repository_dispatch: bucket-updated)
+#  - manual run
 # Regenerates bucket.yml, _includes/bucket-rows.njk, assets/profile.jpg + favicon.
 # Profile README tables are maintained by noartem/noartem refresh.yml workflow.
 
@@ -10,8 +10,6 @@ on:
   schedule:
     - cron: "0 6 * * *" # daily 06:00 UTC
   workflow_dispatch:
-  repository_dispatch:
-    types: [bucket-updated]
 
 permissions:
   contents: write
