@@ -167,6 +167,18 @@ main > .section:not(:first-child) {
   width: 22%;
 }
 
+#bucket .portfolio-table td:first-child {
+  width: 11%;
+  white-space: nowrap;
+}
+
+#bucket .portfolio-table td:nth-child(2) {
+  width: 11%;
+  white-space: nowrap;
+  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 720px) {
   .topbar {
     flex-direction: column;
