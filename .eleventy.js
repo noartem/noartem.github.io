@@ -22,8 +22,13 @@ export default async function(eleventyConfig) {
     "markdownInline",
     (content = "") => md.renderInline(content)
   );
+  const bucketPath = path.join(process.cwd(), "bucket.yml");
+  if (fs.existsSync(bucketPath)) {
+    const bucket = yaml.load(fs.readFileSync(bucketPath, "utf8")) || {};
+    eleventyConfig.addGlobalData("bucket", bucket.bucket || bucket);
+  }
+
   eleventyConfig.addPassthroughCopy("assets");
-  eleventyConfig.addPassthroughCopy("CNAME");
 
   return {
     dir: {

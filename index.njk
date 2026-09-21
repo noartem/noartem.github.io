@@ -92,6 +92,30 @@
             </tbody>
           </table>
         </section>
+
+
+      <section class="section" id="bucket">
+        <h2>Bucket</h2>
+        <p>
+          Scoop bucket with Windows apps I package and maintain —
+          <a href="https://github.com/noartem/bucket">noartem/bucket</a>.
+        </p>
+        <pre>scoop bucket add noartem https://github.com/noartem/bucket
+scoop install noartem/&lt;name&gt;</pre>
+        <table class="portfolio-table">
+          <thead>
+            <tr>
+              <th>App</th>
+              <th>Version</th>
+              <th>License</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% include "bucket-rows.njk" %}
+          </tbody>
+        </table>
+      </section>
       </main>
     </div>
   </body>

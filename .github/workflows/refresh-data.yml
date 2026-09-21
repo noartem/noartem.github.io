@@ -1,0 +1,93 @@
+name: Refresh data
+
+# Keeps profile data current:
+#  - daily scheduled run
+#  - immediate run when the bucket repo changes (repository_dispatch: bucket-updated)
+# Regenerates bucket.yml, _includes/bucket-rows.njk, assets/profile.jpg + favicon,
+# and pushes updated Portfolio/Bucket tables to noartem/noartem (profile README).
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # daily 06:00 UTC
+  workflow_dispatch:
+  repository_dispatch:
+    types: [bucket-updated]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - run: npm ci || npm install
+
+      - name: Fetch bucket + avatar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/fetch-data.cjs
+
+      - name: Detect changes
+        id: diff
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Regenerate favicon from new avatar
+        if: steps.diff.outputs.changed == 'true'
+        run: node scripts/generate-favicon.cjs
+
+      - name: Regenerate profile README tables
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROFILE_REPO: /tmp/noartem-profile
+        run: |
+          git clone --depth 1 "https://x-access-token:${GITHUB_TOKEN}@github.com/noartem/noartem.git" /tmp/noartem-profile
+          node scripts/fetch-data.cjs
+          cd /tmp/noartem-profile
+          git add README.md
+          if git diff --cached --quiet; then
+            echo "PROFILE_CHANGED=false" >> "$GITHUB_ENV"
+          else
+            echo "PROFILE_CHANGED=true" >> "$GITHUB_ENV"
+          fi
+
+      - name: Commit site data
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: refresh bucket data and avatar"
+          git push
+
+      - name: Commit profile README
+        if: env.PROFILE_CHANGED == 'true'
+        run: |
+          cd /tmp/noartem-profile
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: refresh portfolio and bucket tables"
+          git push
+
+      - name: Trigger site deploy
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy-to-ghpages.yml --ref main

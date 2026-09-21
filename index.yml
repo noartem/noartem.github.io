@@ -45,42 +45,83 @@ projects:
     stack:
       - PHP
       - Laravel
+  - name: vantage-box
+    url: https://github.com/noartem/vantage-box
+    description: >-
+      Minimalistic desktop GUI for sing-box
+    stack:
+      - Rust
+      - Tauri
+  - name: twentymate
+    url: https://github.com/noartem/twentymate
+    description: >-
+      20-20-20 windows app
+    stack:
+      - C#
+      - WinForms
+  - name: cloakui
+    url: https://github.com/noartem/cloakui
+    description: >-
+      Windows GUI for Cloak CLI
+    stack:
+      - C#
+  - name: bw-ahk-gui
+    url: https://github.com/noartem/bw-ahk-gui
+    description: >-
+      Fast Windows tray access for Bitwarden CLI vault items
+    stack:
+      - AutoHotkey
+  - name: cloak-ahk-gui
+    url: https://github.com/noartem/cloak-ahk-gui
+    description: >-
+      Fast Windows tray access for Cloak CLI OTP codes
+    stack:
+      - AutoHotkey
   - name: Elementor
     url: https://github.com/noartem/elementor
     description: >-
-      UI library for Desktop Applications written in C++ using Skia and GLFW.
+      UI library for Desktop Applications written in C++ using Skia and GLFW
     stack:
       - C++
       - Skia
       - GLFW
-  - name: Mushrooms VS Pigs
-    url: https://github.com/noartem/mushroomsvspigs"
+  - name: xews
+    url: https://github.com/noartem/xews
     description: >-
-      Simple tower defence game
+      Transfer files through Exchange Web Services
     stack:
-      - Godot
+      - TypeScript
+      - Node.js
   - name: scheduling-algorithms
     url: https://github.com/noartem/scheduling-algorithms
     demo: https://noartem.github.io/scheduling-algorithms
     description: >-
-      Various scheduling alghoritms process visualization
+      Various scheduling algorithms process visualization
     stack:
       - Vue
       - TypeScript
-  - name: "pomidor"
+  - name: pomidor
     url: https://github.com/noartem/pomidor
     demo: https://noartem.github.io/pomidor
     description: >-
-      Pomidoro time tracker
+      Pomidor time tracker
     stack:
       - React
       - TypeScript
   - name: 2048
     url: https://github.com/noartem/2048
     demo: https://noartem.github.io/2048
+    description: >-
+      2048 mind game
     stack:
       - React
       - TypeScript
+  - name: Mushrooms VS Pigs
+    url: https://github.com/noartem/mushroomsvspigs
+    description: >-
+      Simple tower defence game
+    stack:
+      - Godot
   - name: godi
     url: https://github.com/noartem/godi
     description: "Runtime DI Container for Golang"
