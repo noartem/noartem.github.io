@@ -139,12 +139,14 @@ ${bucketRows.join("\n")}
 function renderSiteBucketRows(apps) {
   return apps
     .map((a) => {
-      const repo = a.repo ? ` · <a href="https://github.com/${a.repo}">repo</a>` : "";
+      const desc = a.description || "";
+      const repo = a.repo ? `<a href="https://github.com/${a.repo}">repo</a>` : "";
+      const tail = repo ? (desc ? ` · ${repo}` : repo) : "";
       return `              <tr>
                 <td><a href="${a.url}">${a.name}</a></td>
                 <td><code>${a.version}</code></td>
                 <td>${a.license || ""}</td>
-                <td>${a.description}${repo}</td>
+                <td>${desc}${tail}</td>
               </tr>`;
     })
     .join("\n");
