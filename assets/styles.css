@@ -74,7 +74,6 @@ a:hover {
 /* fixed header never affects document flow: main reserves hero + compact height once,
    so the morph never shifts layout and scroll anchoring never fights the animation */
 .page {
-  max-width: 960px;
   margin: 0;
   padding: 0 var(--edge) 4rem;
 }
@@ -336,10 +335,16 @@ h2 {
 }
 /* --------------------------- about --------------------------- */
 
-.about-text {
+/* text stays readable at 840px; tables and images may span the full page width */
+.about-text,
+.section > p {
   max-width: 840px;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
 .about-text p {
   margin: 0;
 }
