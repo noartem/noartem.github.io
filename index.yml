@@ -31,6 +31,10 @@ strings:
     license: License
     description: Description
   langGroupLabel: Language
+  themeGroupLabel: Theme
+  themeLight: Light theme
+  themeDark: Dark theme
+  themeSystem: Follow system theme
   sectionNavLabel: Sections
   portraitAlt: Portrait of Artem Noskov
   langLabel: Switch to Russian

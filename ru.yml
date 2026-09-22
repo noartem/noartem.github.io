@@ -21,6 +21,10 @@ strings:
   portraitAlt: Портрет Артёма Носкова
   langGroupLabel: Язык
   sectionNavLabel: Разделы
+  themeGroupLabel: Тема
+  themeLight: Светлая тема
+  themeDark: Тёмная тема
+  themeSystem: Как в системе
   bucketHeader:
     app: Приложение
     version: Версия

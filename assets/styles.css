@@ -1,8 +1,17 @@
 :root {
+  color-scheme: light;
+  --bg: #ffffff;
   --text: #111827;
+  --heading: #1f2937;
   --muted: #4b5563;
+  --faint: #6b7280;
   --link: #1a5fb4;
   --border: #e5e7eb;
+  --panel: rgba(255, 255, 255, 0.94);
+  --surface: #ffffff;
+  --avatar-bg: #f8fafc;
+  --tile: rgba(26, 95, 180, 0.13);
+  --chip-border: rgba(17, 24, 39, 0.25);
   --header-font: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 
   /* ---- header morph tuning (edit these) ---- */
@@ -23,6 +32,24 @@
   --edge: clamp(1.5rem, 4vw, 4rem);
 }
 
+/* explicit dark choice; system preference is resolved by site.js, which
+   sets/removes the attribute before first paint via the inline head script */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111827;
+  --text: #e5e7eb;
+  --heading: #f3f4f6;
+  --muted: #9ca3af;
+  --faint: #9ca3af;
+  --link: #6cb2f5;
+  --border: #374151;
+  --panel: rgba(17, 24, 39, 0.94);
+  --surface: #1f2937;
+  --avatar-bg: #1f2937;
+  --tile: rgba(108, 178, 245, 0.16);
+  --chip-border: rgba(226, 232, 240, 0.3);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -31,7 +58,7 @@ body {
   margin: 0;
   font-family: "PT Serif", "Times New Roman", "Noto Serif", serif;
   color: var(--text);
-  background: #ffffff;
+  background: var(--bg);
 }
 
 a {
@@ -50,7 +77,12 @@ a:hover {
   margin: 0;
   padding: 0 var(--edge) 4rem;
 }
-
+body {
+  margin: 0;
+  font-family: "PT Serif", "Times New Roman", "Noto Serif", serif;
+  color: var(--text);
+  background: var(--bg);
+}
 main {
   padding-top: var(--reserve);
 }
@@ -74,7 +106,7 @@ main {
 .head-box {
   position: relative;
   pointer-events: auto;
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--panel);
   backdrop-filter: blur(6px);
   padding: calc(14px * var(--p)) var(--edge);
 }
@@ -106,7 +138,7 @@ main {
      r = half of the shorter side x rounding share, so it never saturates into a pill mid-morph */
   border-radius: calc(min(var(--aw), var(--ah)) / 2 * (var(--av-round-start) + (1 - var(--av-round-start)) * var(--p)));
   border: calc(1px * var(--p)) solid var(--border);
-  background: #f8fafc;
+  background: var(--avatar-bg);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -133,7 +165,7 @@ main {
   font-size: calc(var(--name-hero) - (var(--name-hero) - var(--name-mini)) * var(--p));
   line-height: 1.15;
   margin: 0;
-  color: #1f2937;
+  color: var(--heading);
   white-space: nowrap;
 }
 
@@ -183,24 +215,29 @@ main {
 /* right rail: language switch, pinned to the header's top-right corner */
 
 
+/* right rail: language and theme switches, pinned to the header's top-right */
+
 .head-side {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
   align-self: center;
   margin-top: calc(0.5rem * (1 - var(--p)));
   flex-shrink: 0;
 }
 
-.lang-switch {
+.lang-switch,
+.theme-switch {
   display: inline-flex;
   align-items: center;
   gap: 2px;
   padding: 2.5px;
   border: 1px solid var(--border);
   border-radius: 7px;
-  background: #ffffff;
+  background: var(--surface);
 }
+
 
 .lang {
   line-height: 1;
@@ -222,7 +259,7 @@ main {
 
 /* the active language gets a light blue highlight tile under its flag */
 .lang.active {
-  background: rgba(26, 95, 180, 0.13);
+  background: var(--tile);
 }
 
 .lang .flag {
@@ -230,7 +267,34 @@ main {
   width: 21px;
   height: 14px;
   border-radius: 2.5px;
-  border: 0.5px solid rgba(17, 24, 39, 0.25);
+  border: 0.5px solid var(--chip-border);
+}
+
+.theme-opt {
+  line-height: 1;
+  padding: 2.5px 3.5px;
+  border: 0;
+  border-radius: 5px;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition:
+    filter 0.15s ease,
+    opacity 0.15s ease,
+    background-color 0.15s ease;
+}
+.theme-opt:hover,
+.theme-opt.active {
+  filter: none;
+  opacity: 1;
+}
+
+/* the active option gets the same highlight tile as the active language */
+.theme-opt.active {
+  background: var(--tile);
 }
 
 h2 {
@@ -252,7 +316,7 @@ h2 {
   font-size: 0.75rem;
   letter-spacing: 0.12rem;
   text-transform: uppercase;
-  color: #6b7280;
+  color: var(--faint);
   padding: 0.6rem 0.5rem;
   border-bottom: 1px solid var(--border);
 }
@@ -261,7 +325,7 @@ h2 {
   padding: 0.9rem 1.4rem 0.9rem 0.5rem;
   vertical-align: top;
   border-bottom: 1px solid var(--border);
-  color: #1f2937;
+  color: var(--heading);
 }
 @media (max-width: 720px) {
   main {

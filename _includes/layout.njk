@@ -20,6 +20,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="icon" href="{{ '/assets/favicon.ico' | url }}" />
     <script>
       // Flash prevention: the page is opened scrolled or on a section anchor
       // (/#projects, /#bucket) — render the compact bar immediately, no unroll flash.
@@ -30,6 +31,17 @@
         d.style.setProperty("--p", "1");
         d.classList.add("compact");
       }
+    </script>
+    <script>
+      // Theme flash prevention: resolve the stored mode before first paint.
+      // "system" (the default) leaves the attribute unset — light default CSS.
+      try {
+        var t = localStorage.getItem("theme");
+        if (t !== "light" && t !== "dark") t = "system";
+        if (t === "dark" || (t === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (e) {}
     </script>
   </head>
   <body>
@@ -105,6 +117,11 @@
                   {% if langCode == 'ru' %}aria-current="true"{% endif %}
                   ><svg class="flag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="6.67" fill="#fff"/><rect y="6.67" width="30" height="6.67" fill="#0039A6"/><rect y="13.33" width="30" height="6.67" fill="#D52B1E"/></svg></a
                 >
+              </div>
+              <div class="theme-switch" role="group" aria-label="{{ t.themeGroupLabel }}">
+                <button type="button" class="theme-opt" data-theme-option="light" aria-pressed="false" title="{{ t.themeLight }}" aria-label="{{ t.themeLight }}"><span aria-hidden="true">☀️</span></button>
+                <button type="button" class="theme-opt" data-theme-option="dark" aria-pressed="false" title="{{ t.themeDark }}" aria-label="{{ t.themeDark }}"><span aria-hidden="true">🌙</span></button>
+                <button type="button" class="theme-opt" data-theme-option="system" aria-pressed="false" title="{{ t.themeSystem }}" aria-label="{{ t.themeSystem }}"><span aria-hidden="true">🖥️</span></button>
               </div>
             </div>
           </div>
