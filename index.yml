@@ -2,6 +2,21 @@ title: "Artem Noskov"
 person:
   name: Artem Noskov
   role: Software engineer interested in web
+  about: |
+    Hi! I'm Artem Noskov, a fullstack developer from Chelyabinsk.
+    I've been building web applications for over six years.
+    My main stack is PHP, Laravel, Vue, JavaScript, TypeScript and Golang;
+    on the infrastructure side I work with PostgreSQL, MySQL, Redis, RabbitMQ, Docker and Kubernetes.
+    For the last couple of years my main focus has been LLMs:
+    running models on self-hosted hardware, fine-tuning them for internal tasks,
+    and building MCP servers and AI agents that work with real company data.
+
+    Since 2025 I've worked in the R&D team at Metallinvestbank on internal bank services and LLM adoption.
+    Before that I was at Lofty (backend of an SMM-services marketplace, 2024–2025)
+    and TPT Hub (fullstack on a vehicle fleet logistics system, 2020–2024).
+
+    I studied at South Ural State University, where I earned bachelor's and master's degrees
+    in fundamental informatics and information technology. Russian is my native language, English B2.
   stack:
     - PHP
     - Laravel
@@ -16,15 +31,16 @@ person:
     github: noartem
     linkedin: noartem
 strings:
+  about: About me
   projects: Projects
-  bucket: Bucket
-  bucketIntro: >-
-    Scoop bucket with Windows apps I package and maintain —
-    <a href="https://github.com/noartem/bucket">noartem/bucket</a>.
   projectsHeader:
     name: Name
     stack: Stack
     description: Description
+  bucket: Bucket
+  bucketIntro: >-
+    Scoop bucket with Windows apps I package and maintain —
+    <a href="https://github.com/noartem/bucket">noartem/bucket</a>.
   bucketHeader:
     app: App
     version: Version

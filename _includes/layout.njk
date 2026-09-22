@@ -16,10 +16,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&display=optional"
+      href="https://fonts.googleapis.com/css2?family=Ledger&family=PT+Sans:wght@400;700&display=optional"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="stylesheet" href="/assets/styles.css?v=6" />
     <link rel="icon" href="{{ '/assets/favicon.ico' | url }}" />
     <script>
       // Flash prevention: the page is opened scrolled or on a section anchor
@@ -129,6 +129,13 @@
       </header>
 
       <main>
+        <section class="section" id="about">
+          <h2>{{ t.about }}</h2>
+          {% if L.person.about %}
+            <div class="about-text">{{ L.person.about | markdown | safe }}</div>
+          {% endif %}
+        </section>
+
         <section class="section" id="projects">
           <h2>{{ t.projects }}</h2>
           <table class="portfolio-table">
@@ -185,6 +192,6 @@
         </section>
       </main>
     </div>
-    <script src="/assets/site.js?v=5" defer></script>
+    <script src="/assets/site.js?v=6" defer></script>
   </body>
 </html>

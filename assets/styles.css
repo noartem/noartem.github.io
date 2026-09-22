@@ -12,7 +12,8 @@
   --avatar-bg: #f8fafc;
   --tile: rgba(26, 95, 180, 0.13);
   --chip-border: rgba(17, 24, 39, 0.25);
-  --header-font: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --base-font: "Ledger", Georgia, "Times New Roman", serif;
+  --header-font: var(--base-font);
 
   /* ---- header morph tuning (edit these) ---- */
   --p: 0; /* scroll progress 0 = full hero, 1 = compact bar (set by site.js) */
@@ -53,14 +54,14 @@
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
-  font-family: "PT Serif", "Times New Roman", "Noto Serif", serif;
+  font-family: var(--base-font);
+  font-size: 20px;
+  line-height: 28px;
   color: var(--text);
   background: var(--bg);
 }
-
 a {
   color: var(--link);
   text-decoration: none;
@@ -77,18 +78,12 @@ a:hover {
   margin: 0;
   padding: 0 var(--edge) 4rem;
 }
-body {
-  margin: 0;
-  font-family: "PT Serif", "Times New Roman", "Noto Serif", serif;
-  color: var(--text);
-  background: var(--bg);
-}
 main {
   padding-top: var(--reserve);
 }
 
 .section {
-  scroll-margin-top: 2rem;
+  scroll-margin-top: 4rem;
   padding-top: 3rem;
 }
 
@@ -173,6 +168,7 @@ main {
   color: var(--muted);
   font-size: calc(var(--role-hero) - (var(--role-hero) - var(--role-mini)) * var(--p));
   margin: calc(0.35rem * (1 - var(--p))) 0 0;
+  line-height: 1.35;
 }
 
 .contact-list {
@@ -181,8 +177,13 @@ main {
   flex-wrap: wrap;
   gap: calc(0.35rem - 0.05rem * var(--p)) calc(1.1rem - 0.55rem * var(--p));
   /* row gap shrinks with the morph so the compact stack stays tight */
-  margin: calc(0.9rem - 0.55rem * var(--p)) 0 0;
+  margin: calc(0.9rem - 0.9rem * var(--p)) 0 0;
   padding: 0;
+}
+
+
+.contact-list > li {
+  line-height: calc(1.2 * clamp(0.8, (1 - var(--p)), 1));
 }
 
 .contact-icon {
@@ -191,12 +192,13 @@ main {
   gap: calc(0.4rem * (1 - var(--p)));
   font-family: var(--header-font);
   font-size: 0.85rem;
+  line-height: 1.2;
   color: var(--muted);
 }
 
 .contact-icon svg {
-  width: calc(18px - 3px * var(--p));
-  height: calc(18px - 3px * var(--p));
+  width: calc(18px - 5px * var(--p));
+  height: calc(18px - 5px * var(--p));
   flex-shrink: 0;
 }
 
@@ -229,6 +231,7 @@ main {
 
 .lang-switch,
 .theme-switch {
+  height: 40px;
   display: inline-flex;
   align-items: center;
   gap: 2px;
@@ -240,7 +243,7 @@ main {
 
 
 .lang {
-  line-height: 1;
+  line-height: 1 !important;
   padding: 2.5px 3.5px;
   border-radius: 5px;
   filter: grayscale(1);
@@ -250,6 +253,9 @@ main {
     opacity 0.15s ease,
     background-color 0.15s ease;
   text-decoration: none !important;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 .lang:hover,
 .lang.active {
@@ -301,32 +307,47 @@ h2 {
   font-size: clamp(1.5rem, 3vw, 2.1rem);
   margin: 0 0 1rem;
   font-family: var(--header-font);
+  line-height: 1.25;
 }
 
 .portfolio-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 1rem;
-  margin-inline-start: 2px;
 }
 
 .portfolio-table th {
   text-align: left;
+  line-height: 1.4;
   font-family: var(--header-font);
   font-size: 0.75rem;
   letter-spacing: 0.12rem;
   text-transform: uppercase;
   color: var(--faint);
-  padding: 0.6rem 0.5rem;
+  padding: 0.6rem 1.2rem 0.6rem 0.2rem;
   border-bottom: 1px solid var(--border);
 }
 
 .portfolio-table td {
-  padding: 0.9rem 1.4rem 0.9rem 0.5rem;
+  padding: 0.9rem 1.2rem 0.5rem 0.2rem;
   vertical-align: top;
   border-bottom: 1px solid var(--border);
   color: var(--heading);
 }
+/* --------------------------- about --------------------------- */
+
+.about-text {
+  max-width: 840px;
+}
+
+.about-text p {
+  margin: 0;
+}
+
+.about-text p:not(:last-child) {
+  margin-bottom: 0.9rem;
+}
+
 @media (max-width: 720px) {
   main {
     padding-top: 412px; /* stacked hero ~351 + compact ~60 */
