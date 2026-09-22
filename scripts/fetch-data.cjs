@@ -1,7 +1,8 @@
 // Fetches data from GitHub API and regenerates:
 //   1. bucket.yml         — bucket app list with versions (site data)
-//   2. assets/profile.jpg — latest GitHub profile avatar
-//   3. profile README.md  — Portfolio + Bucket tables in ~/Projects/noartem
+//   2. profile README.md  — Portfolio + Bucket tables in ~/Projects/noartem
+//
+// The site avatar is maintained manually (assets/profile.jpg + avatar-square.jpg for the favicon).
 //
 // Usage: node scripts/fetch-data.cjs
 // Env:   GITHUB_TOKEN (optional, raises rate limits)
@@ -54,23 +55,6 @@ async function fetchBucketApps() {
   return apps;
 }
 
-// GitHub serves the current avatar at avatar_url; strip query params and request a fresh copy.
-async function fetchProfileAvatar() {
-  const user = await ghApi(`/users/${OWNER}`);
-  const avatarUrl = `${user.avatar_url.split("?")[0]}?s=800`;
-  const res = await fetch(avatarUrl, { headers: { "User-Agent": "noartem-site-sync" } });
-  if (!res.ok) throw new Error(`Avatar fetch: ${res.status}`);
-  const buf = Buffer.from(await res.arrayBuffer());
-  const dest = path.join(SITE_ROOT, "assets", "profile.jpg");
-  const prev = fs.existsSync(dest) ? fs.readFileSync(dest) : null;
-  if (prev && prev.equals(buf)) {
-    console.log("assets/profile.jpg: unchanged");
-    return false;
-  }
-  fs.writeFileSync(dest, buf);
-  console.log(`assets/profile.jpg: updated (${buf.length} bytes, avatar_url=${user.avatar_url})`);
-  return true;
-}
 
 function yamlString(s) {
   return /^[\w .,@/()[\]'-]+$/.test(s) && !/[:#]/.test(s.trim().slice(0, 2)) ? s : JSON.stringify(s);
@@ -153,7 +137,7 @@ function renderSiteBucketRows(apps) {
 }
 
 async function main() {
-  const [bucketApps, avatarChanged] = await Promise.all([fetchBucketApps(), fetchProfileAvatar()]);
+  const bucketApps = await fetchBucketApps();
 
   // 1. bucket.yml
   fs.writeFileSync(path.join(SITE_ROOT, "bucket.yml"), renderBucketYml(bucketApps));
@@ -173,7 +157,6 @@ async function main() {
   fs.writeFileSync(path.join(SITE_ROOT, "_includes", "bucket-rows.njk"), renderSiteBucketRows(bucketApps) + "\n");
   console.log("_includes/bucket-rows.njk: updated");
 
-  if (avatarChanged) console.log("avatar changed — site redeploy needed");
 }
 
 main().catch((e) => {

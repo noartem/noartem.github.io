@@ -15,6 +15,25 @@ person:
     telegram: nooskoov
     github: noartem
     linkedin: noartem
+strings:
+  projects: Projects
+  bucket: Bucket
+  bucketIntro: >-
+    Scoop bucket with Windows apps I package and maintain —
+    <a href="https://github.com/noartem/bucket">noartem/bucket</a>.
+  projectsHeader:
+    name: Name
+    stack: Stack
+    description: Description
+  bucketHeader:
+    app: App
+    version: Version
+    license: License
+    description: Description
+  langGroupLabel: Language
+  sectionNavLabel: Sections
+  portraitAlt: Portrait of Artem Noskov
+  langLabel: Switch to Russian
 projects:
   - name: nnt
     url: https://github.com/noartem/nnt

@@ -1,0 +1,28 @@
+title: "Артём Носков"
+person:
+  name: Артём Носков
+  role: Программист с интересом к вебу
+  contacts:
+    email: artem@noartem.ru
+    x: noonartem
+    telegram: nooskoov
+    github: noartem
+    linkedin: noartem
+strings:
+  projects: Проекты
+  bucket: Бакет
+  bucketIntro: >-
+    Scoop-бакет с Windows-приложениями, которые я пакую и поддерживаю —
+    <a href="https://github.com/noartem/bucket">noartem/bucket</a>.
+  projectsHeader:
+    name: Название
+    stack: Стек
+    description: Описание
+  portraitAlt: Портрет Артёма Носкова
+  langGroupLabel: Язык
+  sectionNavLabel: Разделы
+  bucketHeader:
+    app: Приложение
+    version: Версия
+    license: Лицензия
+  langLabel: Переключить на английский

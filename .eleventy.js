@@ -14,6 +14,11 @@ export default async function(eleventyConfig) {
       });
     }
   }
+  const ruPath = path.join(process.cwd(), "ru.yml");
+  if (fs.existsSync(ruPath)) {
+    const ru = yaml.load(fs.readFileSync(ruPath, "utf8")) || {};
+    eleventyConfig.addGlobalData("ru", ru);
+  }
 
   const md = markdownIt({ html: true, linkify: true });
 

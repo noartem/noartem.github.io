@@ -3,13 +3,13 @@ const path = require("node:path");
 const Jimp = require("jimp");
 const pngToIco = require("png-to-ico");
 
-const sourcePath = path.join(__dirname, "..", "assets", "profile.jpg");
+const sourcePath = path.join(__dirname, "..", "avatar-square.jpg");
 const outputPath = path.join(__dirname, "..", "assets", "favicon.ico");
 const sizes = [16, 32, 48, 64, 128, 256];
 
 async function generateFavicon() {
   if (!fs.existsSync(sourcePath)) {
-    console.warn(`Profile image not found: ${sourcePath}`);
+    console.warn(`Square avatar not found: ${sourcePath}`);
     return;
   }
 
