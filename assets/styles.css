@@ -1,22 +1,67 @@
 :root {
+  color-scheme: light;
+  --bg: #ffffff;
   --text: #111827;
+  --heading: #1f2937;
   --muted: #4b5563;
+  --faint: #6b7280;
   --link: #1a5fb4;
-  --accent: #dc2626;
   --border: #e5e7eb;
+  --panel: rgba(255, 255, 255, 0.94);
+  --surface: #ffffff;
+  --avatar-bg: #f8fafc;
+  --tile: rgba(26, 95, 180, 0.13);
+  --chip-border: rgba(17, 24, 39, 0.25);
+  --base-font: "Ledger", Georgia, "Times New Roman", serif;
+  --header-font: var(--base-font);
+
+  /* ---- header morph tuning (edit these) ---- */
+  --p: 0; /* scroll progress 0 = full hero, 1 = compact bar (set by site.js) */
+  --reserve: calc(256px + 3rem);   /* space reserved for the header: hero height + compact bar height */
+  --av-hero-w: 211px; /* hero photo frame */
+  --av-hero-h: 317px;
+  --av-mini: 56px;    /* compact circle */
+  --av-round-start: 0; /* corner rounding at p=0 as a fraction of half the shorter side (0 = square corners in hero) */
+  --av-zoom: 2.3;     /* extra zoom applied to the photo inside the compact circle */
+  --av-focus-hero-y: 50%; /* crop focus while the full frame is visible (no crop yet) */
+  --av-focus-mini-y: 33%; /* face-centered crop in the compact circle */
+  --name-hero: 2.5rem;
+  --name-mini: 1.05rem;
+  --role-hero: 1.05rem;
+  --role-mini: 0.75rem;
+  /* left/top inset used instead of centering the content */
+  --edge: clamp(1.5rem, 4vw, 4rem);
+}
+
+/* explicit dark choice; system preference is resolved by site.js, which
+   sets/removes the attribute before first paint via the inline head script */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111827;
+  --text: #e5e7eb;
+  --heading: #f3f4f6;
+  --muted: #9ca3af;
+  --faint: #9ca3af;
+  --link: #6cb2f5;
+  --border: #374151;
+  --panel: rgba(17, 24, 39, 0.94);
+  --surface: #1f2937;
+  --avatar-bg: #1f2937;
+  --tile: rgba(108, 178, 245, 0.16);
+  --chip-border: rgba(226, 232, 240, 0.3);
 }
 
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
-  font-family: "PT Serif", "Times New Roman", "Noto Serif", serif;
+  font-family: var(--base-font);
+  font-size: 20px;
+  line-height: 28px;
   color: var(--text);
-  background: #ffffff;
+  background: var(--bg);
 }
-
 a {
   color: var(--link);
   text-decoration: none;
@@ -26,113 +71,243 @@ a:hover {
   text-decoration: underline;
 }
 
+/* fixed header never affects document flow: main reserves hero + compact height once,
+   so the morph never shifts layout and scroll anchoring never fights the animation */
 .page {
   max-width: 960px;
-  margin: 0 auto;
-  padding: 1.5rem 1.25rem 4rem;
+  margin: 0;
+  padding: 0 var(--edge) 4rem;
+}
+main {
+  padding-top: var(--reserve);
 }
 
-.topbar {
+.section {
+  scroll-margin-top: 4rem;
+  padding-top: 3rem;
+}
+
+/* --------------------------- morphing header --------------------------- */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.head-box {
+  position: relative;
+  pointer-events: auto;
+  background: var(--panel);
+  backdrop-filter: blur(6px);
+  padding: calc(14px * var(--p)) var(--edge);
+}
+
+/* separator: absent in the hero, fades in with scroll */
+.head-box::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--border);
+  opacity: var(--p);
+}
+
+.head-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 1rem;
+  gap: 1.25rem;
 }
 
-.top-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.head-avatar {
+  --aw: calc(var(--av-hero-w) - (var(--av-hero-w) - var(--av-mini)) * var(--p));
+  --ah: calc(var(--av-hero-h) - (var(--av-hero-h) - var(--av-mini)) * var(--p));
+  width: var(--aw);
+  height: var(--ah);
+  /* corners grow continuously with the shrinking frame and land exactly on a circle:
+     r = half of the shorter side x rounding share, so it never saturates into a pill mid-morph */
+  border-radius: calc(min(var(--aw), var(--ah)) / 2 * (var(--av-round-start) + (1 - var(--av-round-start)) * var(--p)));
+  border: calc(1px * var(--p)) solid var(--border);
+  background: var(--avatar-bg);
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: #f8fafc;
+.head-avatar-img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: 50% calc(var(--av-focus-hero-y) - (var(--av-focus-hero-y) - var(--av-focus-mini-y)) * var(--p));
+  /* extra zoom inside the compact circle: scale(1) in the hero, --av-zoom in the circle */
+  transform: scale(calc(1 + (var(--av-zoom) - 1) * var(--p)));
+  transform-origin: 50% 50%;
 }
 
-.brand {
-  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.95rem;
+.head-id {
+  flex: 1;
+  min-width: 0;
+}
+
+.head-name {
+  font-family: var(--header-font);
   font-weight: 700;
-  color: #1f2937;
+  font-size: calc(var(--name-hero) - (var(--name-hero) - var(--name-mini)) * var(--p));
+  line-height: 1.15;
+  margin: 0;
+  color: var(--heading);
+  white-space: nowrap;
 }
 
-.nav {
+.head-role {
+  color: var(--muted);
+  font-size: calc(var(--role-hero) - (var(--role-hero) - var(--role-mini)) * var(--p));
+  margin: calc(0.35rem * (1 - var(--p))) 0 0;
+  line-height: 1.35;
+}
+
+.contact-list {
+  list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.85rem;
-  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.9rem;
-  color: var(--muted);
-  margin-top: 0.3rem;
+  gap: calc(0.35rem - 0.05rem * var(--p)) calc(1.1rem - 0.55rem * var(--p));
+  /* row gap shrinks with the morph so the compact stack stays tight */
+  margin: calc(0.9rem - 0.9rem * var(--p)) 0 0;
+  padding: 0;
 }
 
-.nav a {
-  color: #374151;
+
+.contact-list > li {
+  line-height: calc(1.2 * clamp(0.8, (1 - var(--p)), 1));
 }
 
-.nav a[href="#portfolio"] {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.top-right {
-  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+.contact-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(0.4rem * (1 - var(--p)));
+  font-family: var(--header-font);
   font-size: 0.85rem;
+  line-height: 1.2;
+  color: var(--muted);
 }
 
-.top-right a + a {
-  margin-left: 0.75rem;
+.contact-icon svg {
+  width: calc(18px - 5px * var(--p));
+  height: calc(18px - 5px * var(--p));
+  flex-shrink: 0;
 }
 
-h1 {
-  font-size: clamp(2.6rem, 5vw, 3.8rem);
-  margin: 0 0 1.2rem;
-  font-weight: 700;
+.contact-icon:hover {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.contact-label {
+  display: inline-block;
+  max-width: calc(9rem * (1 - var(--p)));
+  opacity: calc(1 - var(--p));
+  overflow: hidden;
+  white-space: nowrap;
+}
+/* right rail: language switch, pinned to the header's top-right corner */
+
+
+/* right rail: language and theme switches, pinned to the header's top-right */
+
+.head-side {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: center;
+  margin-top: calc(0.5rem * (1 - var(--p)));
+  flex-shrink: 0;
+}
+
+.lang-switch,
+.theme-switch {
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2.5px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+}
+
+
+.lang {
+  line-height: 1 !important;
+  padding: 2.5px 3.5px;
+  border-radius: 5px;
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition:
+    filter 0.15s ease,
+    opacity 0.15s ease,
+    background-color 0.15s ease;
+  text-decoration: none !important;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.lang:hover,
+.lang.active {
+  filter: none;
+  opacity: 1;
+}
+
+/* the active language gets a light blue highlight tile under its flag */
+.lang.active {
+  background: var(--tile);
+}
+
+.lang .flag {
+  display: block;
+  width: 21px;
+  height: 14px;
+  border-radius: 2.5px;
+  border: 0.5px solid var(--chip-border);
+}
+
+.theme-opt {
+  line-height: 1;
+  padding: 2.5px 3.5px;
+  border: 0;
+  border-radius: 5px;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  filter: grayscale(1);
+  opacity: 0.55;
+  transition:
+    filter 0.15s ease,
+    opacity 0.15s ease,
+    background-color 0.15s ease;
+}
+.theme-opt:hover,
+.theme-opt.active {
+  filter: none;
+  opacity: 1;
+}
+
+/* the active option gets the same highlight tile as the active language */
+.theme-opt.active {
+  background: var(--tile);
 }
 
 h2 {
   font-size: clamp(1.5rem, 3vw, 2.1rem);
-  margin: 0 0 0.8rem;
-  font-weight: 700;
-}
-
-p {
-  margin: 0 0 0.75rem;
-  color: var(--muted);
-  line-height: 1.75;
-}
-
-.lead {
-  font-size: 1.1rem;
-}
-
-.intro h2 {
-  margin-top: 0;
-}
-
-.meta {
-  font-size: 1rem;
-  color: var(--muted);
-}
-
-.meta strong {
-  color: var(--text);
-  font-weight: 700;
-}
-
-main > .section:not(:first-child) {
-  margin-top: 2rem;
-}
-
-.section {
-  padding-top: 1.5rem;
+  margin: 0 0 1rem;
+  font-family: var(--header-font);
+  line-height: 1.25;
 }
 
 .portfolio-table {
@@ -143,49 +318,87 @@ main > .section:not(:first-child) {
 
 .portfolio-table th {
   text-align: left;
-  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.4;
+  font-family: var(--header-font);
   font-size: 0.75rem;
   letter-spacing: 0.12rem;
   text-transform: uppercase;
-  color: #6b7280;
-  padding: 0.6rem 0;
+  color: var(--faint);
+  padding: 0.6rem 1.2rem 0.6rem 0.2rem;
   border-bottom: 1px solid var(--border);
 }
 
 .portfolio-table td {
-  padding: 0.9rem 0.9rem 0.9rem 0;
+  padding: 0.9rem 1.2rem 0.5rem 0.2rem;
   vertical-align: top;
   border-bottom: 1px solid var(--border);
-  color: #1f2937;
+  color: var(--heading);
+}
+/* --------------------------- about --------------------------- */
+
+.about-text {
+  max-width: 840px;
 }
 
-.portfolio-table td:first-child {
-  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.9rem;
-  color: #4b5563;
-  width: 22%;
+.about-text p {
+  margin: 0;
 }
 
-#bucket .portfolio-table td:first-child {
-  width: 11%;
-  white-space: nowrap;
-}
-
-#bucket .portfolio-table td:nth-child(2) {
-  width: 11%;
-  white-space: nowrap;
-  font-family: "PT Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.9rem;
+.about-text p:not(:last-child) {
+  margin-bottom: 0.9rem;
 }
 
 @media (max-width: 720px) {
-  .topbar {
-    flex-direction: column;
-    align-items: flex-start;
+  main {
+    padding-top: 412px; /* stacked hero ~351 + compact ~60 */
   }
 
-  .top-right {
-    align-self: flex-start;
+  :root {
+    --reserve: calc(256px + 4rem);
+    --av-hero-w: 139px;
+    --av-hero-h: 208px;
+    --name-hero: 1.6rem;
+  }
+
+  /* mobile keeps everything stacked: auto height, no flight vars */
+  .head-id {
+    height: auto;
+  }
+
+  .head-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .head-side {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+    order: -1;           /* flags sit above the stacked hero, top-right */
+    align-self: flex-end;
+    margin-top: 0;
+  }
+
+  html.compact .head-side {
+    order: 0;
+    align-self: center;
+    margin-top: 0;
+  }
+
+  html.compact .head-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* mobile: everything keeps its own line, slightly tighter */
+  .head-role {
+    margin: 3px 0 0;
+  }
+
+  html.compact .head-name {
+    flex: 0 0 auto;
   }
 
   .portfolio-table th:nth-child(1),
@@ -193,3 +406,4 @@ main > .section:not(:first-child) {
     width: auto;
   }
 }
+
