@@ -54,6 +54,7 @@ strings:
   sectionNavLabel: Sections
   portraitAlt: Portrait of Artem Noskov
   langLabel: Switch to Russian
+  cvLabel: CV
 projects:
   - name: nnt
     url: https://github.com/noartem/nnt

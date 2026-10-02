@@ -36,6 +36,10 @@ export default async function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addPassthroughCopy({ CNAME: "CNAME" });
 
+  // CV PDFs live at the locale roots: /CV.pdf (en) and /ru/CV.pdf (ru).
+  eleventyConfig.addPassthroughCopy({ "CV.en.pdf": "CV.pdf" });
+  eleventyConfig.addPassthroughCopy({ "CV.ru.pdf": "ru/CV.pdf" });
+
   return {
     dir: {
       input: ".",
